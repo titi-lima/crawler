@@ -6,7 +6,7 @@ from infra.data_access.receipt import ReceiptRepository
 class ScraperService:
     def __init__(self, url):
         self.url = url
-        self.receiptRepository = ReceiptRepository("titi-lima-receipts")
+        self.receiptRepository = ReceiptRepository("receipts")
 
     def scrape(self):
         try:
