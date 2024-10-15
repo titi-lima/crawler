@@ -56,6 +56,8 @@ resource "aws_lambda_function" "test_lambda" {
   environment {
     variables = {
       "API_KEY" = "${var.api_key}"
+      "AWS_ACCESS_KEY_ID" = "${var.access_key}"
+      "AWS_SECRET_ACCESS_KEY" = "${var.secret_key}"
     }
   }
 }

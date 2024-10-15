@@ -1,10 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 from fastapi.exceptions import HTTPException
+from infra.data_access.receipt import ReceiptRepository
 
 class ScraperService:
     def __init__(self, url):
         self.url = url
+        self.receiptRepository = ReceiptRepository("titi-lima-receipts")
 
     def scrape(self):
         try:
@@ -14,7 +16,7 @@ class ScraperService:
 
             receipt_id = soup.find('nNF').text
             receipt_date = soup.find('dhEmi').text
-            receipt_price = soup.find('vNF').text
+            receipt_total = soup.find('vNF').text
 
             products = []
 
@@ -22,16 +24,19 @@ class ScraperService:
                 id = prod.find('cProd').text
                 name = prod.find('xProd').text
                 price = prod.find('vProd').text
-                products.append({"id": id, "name": name, "price": price})
+                quantity = prod.find('qCom').text
+                products.append({"id": id, "name": name, "price": price, "quantity": quantity})
             
             data = {
                 "id": receipt_id,
                 "date": receipt_date,
-                "price": receipt_price,
+                "total": receipt_total,
                 "products": products
             }
 
-            return {"message": "Page scraped successfully", "data": data}
+            data_from_dynamo = self.receiptRepository.create(data)
+
+            return {"message": "Page scraped successfully", "data": data_from_dynamo}
         except HTTPException as e:
             raise HTTPException(status_code=e.status_code, detail=f"HTTP Error: {e}")
         except requests.exceptions.HTTPError as e:
