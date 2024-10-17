@@ -24,4 +24,9 @@ class ReceiptController:
         receipt = receipt_service.get(receipt_id)
         return {"message": "Receipt found", "data": receipt}
     
-        return receipt_service.get(receipt_id)
+    @staticmethod
+    @app.delete("/{receipt_id}")
+    def delete_receipt(receipt_id: str):
+        receipt_service = ReceiptService()
+        receipt_service.delete(receipt_id)
+        return {"message": "Receipt deleted successfully"}

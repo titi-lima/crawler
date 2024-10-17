@@ -20,3 +20,6 @@ class ReceiptRepository:
     def get_all(self):
         response = self.table.scan()
         return response.get("Items")
+    
+    def delete(self, receipt_id: str, date: str):
+        self.table.delete_item(Key={"id": receipt_id, "date": date})
