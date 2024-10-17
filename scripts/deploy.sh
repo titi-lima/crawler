@@ -11,3 +11,4 @@ cd ..
 zip -g -r ../deployment/lambda_function_payload.zip ./* -x output/\*
 cd ../deployment
 terraform apply
+rm -rf ../app/output
