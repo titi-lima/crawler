@@ -6,7 +6,8 @@ app = APIRouter()
 
 class ScraperController:
     @staticmethod
-    @app.post("/")
+    @app.post("/", status_code=201)
     def scrape(scraper: Scraper):
         scraper_service = ScraperService(scraper.url)
-        return scraper_service.scrape()
+        data = scraper_service.scrape()
+        return {"message": "Page scraped successfully", "data": data}

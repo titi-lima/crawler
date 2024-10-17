@@ -34,11 +34,15 @@ class ScraperService:
                 "products": products
             }
 
-            data_from_dynamo = self.receiptRepository.create(data)
+            receiptExists = self.receiptRepository.get(receipt_id)
+            if receiptExists is not None:
+                raise HTTPException(status_code=409, detail="Receipt already exists")
 
-            return {"message": "Page scraped successfully", "data": data_from_dynamo}
+            self.receiptRepository.create(data)
+
+            return data
         except HTTPException as e:
-            raise HTTPException(status_code=e.status_code, detail=f"HTTP Error: {e}")
+            raise HTTPException(status_code=e.status_code, detail=f"{e.detail}")
         except requests.exceptions.HTTPError as e:
             raise HTTPException(status_code=e.response.status_code, detail=f"HTTP Error: {e}")
         except requests.exceptions.ConnectionError as e:
