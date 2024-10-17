@@ -4,4 +4,4 @@ class Product(BaseModel):
     id: int
     name: str
     price: float
-    quantiy: int
+    quantity: float

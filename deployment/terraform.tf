@@ -56,6 +56,8 @@ resource "aws_lambda_function" "test_lambda" {
   environment {
     variables = {
       "API_KEY" = "${var.api_key}"
+      "MY_AWS_ACCESS_KEY_ID" = "${var.access_key}"
+      "MY_AWS_SECRET_ACCESS_KEY" = "${var.secret_key}"
     }
   }
 }
@@ -118,4 +120,27 @@ resource "aws_iam_role_policy" "lambda_logging" {
       }
     ]
   })
+}
+
+resource "aws_dynamodb_table" "receipts" {
+  name           = "receipts"
+  billing_mode   = "PAY_PER_REQUEST"
+
+  hash_key       = "id"        # Partition key
+  range_key      = "date"      # Sort key
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  attribute {
+    name = "date"
+    type = "S"
+  }
+
+  tags = {
+    Environment = "production"
+    Name        = "ReceiptsTable"
+  }
 }

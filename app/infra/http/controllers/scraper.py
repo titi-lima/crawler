@@ -7,5 +7,6 @@ app = APIRouter()
 class ScraperController:
     @staticmethod
     @app.post("/")
-    def scrape(url: Scraper):
-        return ScraperService.scrape(url)
+    def scrape(scraper: Scraper):
+        scraper_service = ScraperService(scraper.url)
+        return scraper_service.scrape()

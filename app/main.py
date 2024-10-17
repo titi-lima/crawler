@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from infra.http.middlewares import error_handler
-from infra.http.middlewares.auth import api_key_auth
 from mangum import Mangum
 from infra.http.routes import router
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI()
 
