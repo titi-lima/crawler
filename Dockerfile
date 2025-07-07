@@ -1,9 +1,13 @@
-FROM public.ecr.aws/lambda/python:3.10
+FROM python:3.10-slim
 
-COPY app ${LAMBDA_TASK_ROOT}
+WORKDIR /usr/src/app
 
+COPY app/Pipfile app/Pipfile.lock ./
 RUN pip install pipenv
+RUN pipenv install --system --deploy --ignore-pipfile
 
-RUN pipenv install --system --deploy
+COPY app/ .
 
-CMD [ "main.handler" ]
+EXPOSE 8080
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crawler-app-deployment
+  labels:
+    app: crawler-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crawler-app
+  template:
+    metadata:
+      labels:
+        app: crawler-app
+    spec:
+      containers:
+      - name: crawler-app
+        image: crawler-app:latest
+        ports:
+        - containerPort: 8080 

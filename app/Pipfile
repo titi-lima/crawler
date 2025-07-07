@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 fastapi = {extras = ["standard"], version = "*"}
+uvicorn = "*"
 mangum = "*"
 beautifulsoup4 = "*"
 boto3 = "*"
